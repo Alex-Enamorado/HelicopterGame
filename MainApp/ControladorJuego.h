@@ -2,62 +2,42 @@
 #define CONTROLADORJUEGO_H
 
 #include <QObject>
-#include <QPointer>
 #include <QElapsedTimer>
 
 class QTimer;
 class JuegoScene;
 class JuegoView;
 
-/*
- * ControladorJuego
- * ---------------------------------------------------------------------------
- * Coordina una partida. Es el "director" que une las piezas:
- *
- *   JuegoView  --(señales de teclado)-->  ControladorJuego
- *   ControladorJuego --(actualizar / verificar)--> JuegoScene --> Helicoptero
- *
- * Responsabilidades:
- *   - Crear y destruir la JuegoScene.
- *   - Manejar el QTimer del ciclo de juego y calcular el delta time.
- *   - Llevar el estado de la partida (preparado, en curso, terminada).
- *   - Avisar a la ventana principal cuando el jugador quiere volver al menú.
- */
+// Coordina la partida: recibe las teclas, mueve el juego con un QTimer
+// y decide cuándo termina la misión.
 class ControladorJuego : public QObject
 {
     Q_OBJECT
 
 public:
-    enum class Estado { Inactivo, Preparado, EnCurso, Terminada };
+    ControladorJuego(JuegoView *vistaJuego, QObject *padre = nullptr);
+    ~ControladorJuego();
 
-    explicit ControladorJuego(JuegoView *vista, QObject *padre = nullptr);
-    ~ControladorJuego() override;
-
-    Estado getEstado() const { return estado; }
-
-public slots:
-    void iniciarPartida();     // Prepara una partida nueva y arranca el timer
-    void detenerPartida();     // Detiene el timer (al volver al menú)
+    void iniciarPartida();
 
 signals:
     void volverAlMenu();
 
 private slots:
-    void actualizar();                    // Un "tick" del juego (lo llama el QTimer)
-    void alCambiarImpulso(bool activo);
-    void alSolicitarReintento();
-    void alSolicitarMenu();
+    void actualizar();                         // Se llama en cada tick del QTimer
+    void alPresionarEspacio(bool presionada);
+    void alPresionarEnter();
+    void alPresionarEscape();
 
 private:
-    void terminarPartida(const QString &motivo);
+    void terminarPartida();
 
-    QPointer<JuegoView> vista;      // No propietario. QPointer se vuelve nullptr
-                                    // solo si la vista se destruye antes.
-    JuegoScene *escena = nullptr;   // Propietario: se crea con new y se libera
-                                    // con delete en el destructor.
-    QTimer *temporizador = nullptr; // Hijo de este objeto (Qt lo libera).
-    QElapsedTimer reloj;            // Mide el tiempo real entre ticks.
-    Estado estado = Estado::Inactivo;
+    JuegoView *vista;       // No es dueño (la ventana la borra)
+    JuegoScene *escena;     // Es dueño: new en el constructor, delete en el destructor
+    QTimer *timer;          // Hijo de este objeto: Qt lo borra solo
+    QElapsedTimer reloj;    // Mide el tiempo real entre ticks (delta time)
+    bool enVuelo;
+    bool terminada;
 };
 
-#endif // CONTROLADORJUEGO_H
+#endif

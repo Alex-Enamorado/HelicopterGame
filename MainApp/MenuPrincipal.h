@@ -2,46 +2,24 @@
 #define MENUPRINCIPAL_H
 
 #include <QWidget>
-#include <QPixmap>
 
 class QPushButton;
-class QPaintEvent;
 
-/*
- * MenuPrincipal
- * ---------------------------------------------------------------------------
- * Pantalla del menú con el título HELICOPTER RESCUE y tres botones:
- * Iniciar Misión, Instrucciones y Salir.
- *
- * Solo se encarga de la INTERFAZ: cuando se presiona un botón emite una
- * señal y es la VentanaPrincipal quien decide qué hacer. Así el menú se
- * puede reutilizar o cambiar sin tocar la lógica del juego.
- */
+// Pantalla del menú: título y tres botones. Solo avisa qué botón se presionó.
 class MenuPrincipal : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MenuPrincipal(QWidget *padre = nullptr);
-    ~MenuPrincipal() override = default;
+    MenuPrincipal(QWidget *padre = nullptr);
 
 signals:
-    void iniciarMisionSolicitado();
-    void instruccionesSolicitadas();
-    void salirSolicitado();
-
-protected:
-    void paintEvent(QPaintEvent *evento) override;   // Dibuja el fondo temático
+    void iniciarPresionado();
+    void instruccionesPresionado();
+    void salirPresionado();
 
 private:
-    QPushButton *crearBoton(const QString &rutaImagen, const QString &textoRespaldo);
-
-    QPixmap imagenFondo;   // Se carga una sola vez (objeto por valor, sin new)
-
-    // Punteros no propietarios: el layout los asigna como hijos del menú.
-    QPushButton *botonIniciar       = nullptr;
-    QPushButton *botonInstrucciones = nullptr;
-    QPushButton *botonSalir         = nullptr;
+    QPushButton *crearBoton(QString rutaImagen);
 };
 
-#endif // MENUPRINCIPAL_H
+#endif
