@@ -1,0 +1,20 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <!--
+        Recursos gráficos embebidos en el ejecutable.
+        Las imágenes reales están en la carpeta ../Recursos (raíz del repositorio).
+        En el código se usan con rutas cortas, por ejemplo ":/img/helicoptero.png".
+    -->
+    <qresource prefix="/img">
+        <file alias="helicoptero.png">../Recursos/01_Helicoptero_Rotor.png</file>
+        <file alias="fondo_montanas.png">../Recursos/02_Fondo_Montanas.png</file>
+        <file alias="fondo_cueva.png">../Recursos/03_Fondo_Cueva.png</file>
+        <file alias="techo_1.png">../Recursos/04_Techo_Cueva_Seccion1.png</file>
+        <file alias="techo_2.png">../Recursos/05_Techo_Cueva_Seccion2.png</file>
+        <file alias="suelo_1.png">../Recursos/07_Suelo_Rocoso_Seccion1.png</file>
+        <file alias="suelo_2.png">../Recursos/08_Suelo_Rocoso_Seccion2.png</file>
+        <file alias="boton_iniciar.png">../Recursos/11_Boton_Iniciar_Mision.png</file>
+        <file alias="boton_instrucciones.png">../Recursos/12_Boton_Instrucciones.png</file>
+        <file alias="boton_salir.png">../Recursos/13_Boton_Salir.png</file>
+    </qresource>
+</RCC>
