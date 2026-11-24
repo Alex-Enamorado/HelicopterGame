@@ -5,7 +5,6 @@
 #include <QPixmap>
 #include <QFont>
 
-// Límites del área de vuelo (en píxeles)
 const double LIMITE_TECHO = 95;
 const double LIMITE_SUELO = 540;
 const double MEDIA_ALTURA_HELI = 28;
@@ -16,12 +15,10 @@ JuegoScene::JuegoScene(QObject* padre) : QGraphicsScene(padre){
 
     setSceneRect(0, 0, 1024, 600);
 
-    // Fondo de cueva
     QPixmap fondo(":/img/fondo_cueva.png");
     fondo = fondo.scaled(1024, 600);
     addPixmap(fondo);
 
-    // Techo y suelo: la misma imagen repetida a lo ancho
     QPixmap imagenTecho(":/img/techo.png");
     QPixmap imagenSuelo(":/img/suelo.png");
     for(int x = 0; x < 1024; x = x + 290){
@@ -32,7 +29,6 @@ JuegoScene::JuegoScene(QObject* padre) : QGraphicsScene(padre){
         suelo->setPos(x, 600 - imagenSuelo.height());
     }
 
-    // Lo que se agrega después se dibuja encima
     helicoptero = new Helicoptero();
     addItem(helicoptero);
 

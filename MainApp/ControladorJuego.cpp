@@ -21,7 +21,7 @@ ControladorJuego::ControladorJuego(JuegoView* vistaJuego, QObject* padre) : QObj
 }
 
 ControladorJuego::~ControladorJuego(){
-    delete escena;      // Al borrar la escena, ella borra el helicóptero y lo demás
+    delete escena;
     escena = nullptr;
 }
 
@@ -39,12 +39,11 @@ void ControladorJuego::alPresionarEspacio(bool presionada){
         return;
     }
 
-    // El primer ESPACIO arranca el vuelo
     if(enVuelo == false && presionada == true){
         enVuelo = true;
         escena->ocultarMensaje();
         reloj.start();
-        timer->start(16);   // ~60 veces por segundo
+        timer->start(16);
     }
 
     if(enVuelo){
@@ -65,10 +64,8 @@ void ControladorJuego::alPresionarEscape(){
 }
 
 void ControladorJuego::actualizar(){
-    // Delta time: segundos reales desde el tick anterior
     double deltaTime = reloj.restart() / 1000.0;
 
-    // Evita saltos grandes si la ventana se congela
     if(deltaTime > 0.05){
         deltaTime = 0.05;
     }
@@ -81,7 +78,7 @@ void ControladorJuego::actualizar(){
 }
 
 void ControladorJuego::terminarPartida(){
-    timer->stop();          // Detiene el movimiento
+    timer->stop();
     enVuelo = false;
     terminada = true;
     escena->mostrarMensaje("MISIÓN TERMINADA<br>El helicóptero chocó<br><br>"

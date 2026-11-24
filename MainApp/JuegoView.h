@@ -3,7 +3,6 @@
 
 #include <QGraphicsView>
 
-// Muestra la escena y avisa (con señales) qué teclas presiona el jugador.
 class JuegoView : public QGraphicsView {
     Q_OBJECT
 

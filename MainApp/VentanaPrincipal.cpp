@@ -9,7 +9,6 @@ VentanaPrincipal::VentanaPrincipal(QWidget* padre) : QMainWindow(padre){
     setWindowTitle("Helicopter Rescue");
     setFixedSize(1024, 600);
 
-    // QStackedWidget muestra una sola pantalla a la vez
     pantallas = new QStackedWidget(this);
     setCentralWidget(pantallas);
 

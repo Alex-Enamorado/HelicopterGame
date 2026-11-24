@@ -9,7 +9,6 @@ JuegoView::JuegoView(QWidget* padre) : QGraphicsView(padre){
 }
 
 void JuegoView::keyPressEvent(QKeyEvent* evento){
-    // Al mantener una tecla, el sistema repite el evento: se ignoran las repeticiones
     if(evento->isAutoRepeat()){
         return;
     }

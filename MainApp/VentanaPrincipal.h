@@ -8,7 +8,6 @@ class MenuPrincipal;
 class JuegoView;
 class ControladorJuego;
 
-// Ventana de la aplicación. Cambia entre el menú y el juego.
 class VentanaPrincipal : public QMainWindow {
     Q_OBJECT
 
@@ -21,7 +20,6 @@ private slots:
     void mostrarMenu();
 
 private:
-    // Todos tienen padre en Qt: se borran solos al cerrar la ventana
     QStackedWidget* pantallas;
     MenuPrincipal* menu;
     JuegoView* vista;

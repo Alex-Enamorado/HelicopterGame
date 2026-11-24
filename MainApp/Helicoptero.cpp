@@ -16,8 +16,6 @@ Helicoptero::Helicoptero(){
     setPixmap(imagen);
     setTransformationMode(Qt::SmoothTransformation);
 
-    // Se mueve el dibujo para que el punto (0,0) quede en su centro:
-    // así la posición es el centro y la rotación gira sobre el centro.
     setOffset(-imagen.width() / 2.0, -imagen.height() / 2.0);
 
     reiniciar();
@@ -38,18 +36,14 @@ void Helicoptero::setImpulso(bool activo){
 }
 
 void Helicoptero::actualizar(double deltaTime){
-    // En Qt el eje Y crece hacia abajo: la gravedad es positiva
-    // y el empuje del motor se resta.
     if(impulso){
         aceleracion = gravedad - empuje;
     } else {
         aceleracion = gravedad;
     }
 
-    // Velocidad: vy = vy + aceleracion * deltaTime
     velocidadY = velocidadY + aceleracion * deltaTime;
 
-    // Límite de velocidad para que se pueda controlar
     if(velocidadY > 450){
         velocidadY = 450;
     }
@@ -57,12 +51,9 @@ void Helicoptero::actualizar(double deltaTime){
         velocidadY = -450;
     }
 
-    // Posición: y = y + vy * deltaTime
     y = y + velocidadY * deltaTime;
 
-    // Inclinación: subir = nariz arriba (ángulo negativo), bajar = nariz abajo.
-    // El ángulo se acerca poco a poco al objetivo para que no gire de golpe.
-    double anguloObjetivo = velocidadY / 25.0;   // Máximo 450 / 25 = 18 grados
+    double anguloObjetivo = velocidadY / 25.0;
     rotacion = rotacion + (anguloObjetivo - rotacion) * 5.0 * deltaTime;
 
     setPos(x, y);

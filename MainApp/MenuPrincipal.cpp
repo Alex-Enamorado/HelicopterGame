@@ -4,7 +4,6 @@
 #include <QVBoxLayout>
 
 MenuPrincipal::MenuPrincipal(QWidget* padre) : QWidget(padre){
-    // Imagen de fondo
     QPixmap fondo(":/img/fondo_montanas.png");
     fondo = fondo.scaled(1024, 600);
     QPalette paleta = palette();
@@ -21,8 +20,6 @@ MenuPrincipal::MenuPrincipal(QWidget* padre) : QWidget(padre){
     QPushButton* botonInstrucciones = crearBoton(":/img/boton_instrucciones.png");
     QPushButton* botonSalir = crearBoton(":/img/boton_salir.png");
 
-    // Al agregarlos al layout, los widgets pasan a ser hijos del menú
-    // y Qt los borra automáticamente.
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addStretch();
     layout->addWidget(titulo);
@@ -37,7 +34,6 @@ MenuPrincipal::MenuPrincipal(QWidget* padre) : QWidget(padre){
     connect(botonSalir, &QPushButton::clicked, this, &MenuPrincipal::salirPresionado);
 }
 
-// Crea un botón que muestra una imagen
 QPushButton* MenuPrincipal::crearBoton(QString rutaImagen){
     QPixmap imagen(rutaImagen);
 

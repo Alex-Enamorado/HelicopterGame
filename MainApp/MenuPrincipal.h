@@ -5,7 +5,6 @@
 
 class QPushButton;
 
-// Pantalla del menú: título y tres botones. Solo avisa qué botón se presionó.
 class MenuPrincipal : public QWidget {
     Q_OBJECT
 
