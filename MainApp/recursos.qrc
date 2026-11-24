@@ -2,12 +2,6 @@
 <RCC version="1.0">
     <qresource prefix="/img">
         <file alias="helicoptero.png">../Recursos/01_Helicoptero_Rotor.png</file>
-        <file alias="fondo_montanas.png">../Recursos/02_Fondo_Montanas.png</file>
-        <file alias="fondo_cueva.png">../Recursos/03_Fondo_Cueva.png</file>
-        <file alias="techo.png">../Recursos/04_Techo_Cueva_Seccion1.png</file>
-        <file alias="suelo.png">../Recursos/07_Suelo_Rocoso_Seccion1.png</file>
-        <file alias="boton_iniciar.png">../Recursos/11_Boton_Iniciar_Mision.png</file>
-        <file alias="boton_instrucciones.png">../Recursos/12_Boton_Instrucciones.png</file>
-        <file alias="boton_salir.png">../Recursos/13_Boton_Salir.png</file>
+        <file alias="fondo.png">../Recursos/02_Fondo_Montanas.png</file>
     </qresource>
 </RCC>

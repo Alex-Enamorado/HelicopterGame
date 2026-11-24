@@ -18,7 +18,7 @@ por medio de `recursos.qrc` y quedan dentro del ejecutable.
 | `MenuPrincipal` | Título y botones Iniciar Misión, Instrucciones y Salir. Emite una señal por botón |
 | `JuegoView` | Muestra la escena y convierte las teclas en señales |
 | `JuegoScene` | Arma el escenario (fondo, techo, suelo, helicóptero, mensaje) y revisa colisiones |
-| `Helicoptero` | Posición, velocidad, aceleración, gravedad y rotación |
+| `Helicoptero` | Posición, velocidad, aceleración, gravedad, movimiento lateral y rotación |
 | `ControladorJuego` | Tiene el `QTimer`, calcula el delta time y decide cuándo empieza y termina la partida |
 
 ## Física
@@ -37,6 +37,11 @@ y  = y  + vy * deltaTime
   Así el helicóptero se mueve igual en cualquier computadora, aunque el
   `QTimer` no sea exacto.
 * La velocidad se limita a ±450 px/s.
+* **Flecha abajo:** suma otra `gravedad` a la aceleración, así que baja más rápido.
+* **Movimiento lateral:** con IZQUIERDA o DERECHA la `velocidadX` cambia
+  `1500 * deltaTime` por cuadro (máximo ±350 px/s). Al soltar la tecla, la
+  `friccion` (1200) la frena hasta 0. `x = x + velocidadX * deltaTime`.
+  La escena mantiene al helicóptero dentro de la pantalla y, al tocar un lado, su `velocidadX` vuelve a 0.
 * **Inclinación:** `anguloObjetivo = vy / 25`, como máximo 18°. En cada cuadro
   la rotación avanza solo una parte hacia ese ángulo, para que no gire de golpe:
   `rotacion += (anguloObjetivo - rotacion) * 5 * deltaTime`.
@@ -47,8 +52,10 @@ y  = y  + vy * deltaTime
 
 | Tecla | Señal | Efecto |
 |---|---|---|
-| ESPACIO (presionar) | `teclaEspacio(true)` | Arranca el vuelo y activa el impulso |
-| ESPACIO (soltar) | `teclaEspacio(false)` | Quita el impulso; cae por gravedad |
+| ESPACIO o ↑ (presionar) | `teclaImpulso(true)` | Arranca el vuelo y activa el impulso |
+| ESPACIO o ↑ (soltar) | `teclaImpulso(false)` | Quita el impulso (si no sigue presionada la otra tecla); cae por gravedad |
+| ↓ | `teclaAbajo(bool)` | Baja más rápido mientras se mantiene |
+| ← y → | `teclaIzquierda(bool)`, `teclaDerecha(bool)` | Mueve el helicóptero a los lados mientras se mantienen |
 | ENTER | `teclaEnter()` | Reintenta después de chocar |
 | ESC | `teclaEscape()` | Vuelve al menú |
 
@@ -56,9 +63,12 @@ y  = y  + vy * deltaTime
 
 ## Colisiones
 
-El helicóptero choca si su borde superior pasa `LIMITE_TECHO` (95) o su borde
-inferior pasa `LIMITE_SUELO` (540). Al chocar se detiene el timer y aparece
-"MISIÓN TERMINADA".
+* **Techo:** el helicóptero choca si su borde superior pasa `LIMITE_TECHO` (95).
+  Se detiene el timer y aparece "MISIÓN TERMINADA".
+* **Suelo:** no se pierde. Si el borde inferior pasa `LIMITE_SUELO` (540),
+  `JuegoScene` llama a `Helicoptero::aterrizar()`, que lo deja apoyado en el
+  suelo con `velocidadY = 0`. Puede quedarse ahí o despegar con ESPACIO / ↑.
+* **Lados:** `Helicoptero::limitarX()` evita que salga de la pantalla.
 
 ## Memoria y punteros
 
@@ -82,7 +92,11 @@ inferior pasa `LIMITE_SUELO` (540). Al chocar se detiene el timer y aparece
 | Iniciar Misión | Cueva con "Presiona ESPACIO para despegar" |
 | Mantener ESPACIO | Sube y se inclina con la nariz hacia arriba |
 | Soltar ESPACIO | Baja y se inclina con la nariz hacia abajo, suavemente |
-| No presionar nada | Cae al suelo → "MISIÓN TERMINADA" |
+| No presionar nada | Cae y se queda apoyado en el suelo, sin perder |
+| ← / → | Se mueve a los lados y frena al soltar; no sale de la pantalla |
+| ↑ | Igual que ESPACIO |
+| ↓ | Baja más rápido |
+| En el suelo, ESPACIO / ↑ | Vuelve a despegar |
 | Mantener ESPACIO siempre | Choca con el techo → "MISIÓN TERMINADA" |
 | ENTER tras chocar | Reinicia la partida |
 | ESC | Vuelve al menú |
