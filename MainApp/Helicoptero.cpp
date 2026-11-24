@@ -1,6 +1,8 @@
 #include "Helicoptero.h"
 #include <QPixmap>
 
+using namespace std;
+
 Helicoptero::Helicoptero(){
     x = 220;
     y = 300;

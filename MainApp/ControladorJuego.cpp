@@ -4,6 +4,8 @@
 #include "Helicoptero.h"
 #include <QTimer>
 
+using namespace std;
+
 ControladorJuego::ControladorJuego(JuegoView* vistaJuego, QObject* padre) : QObject(padre){
     vista = vistaJuego;
     enVuelo = false;

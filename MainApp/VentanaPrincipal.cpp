@@ -5,6 +5,8 @@
 #include <QStackedWidget>
 #include <QMessageBox>
 
+using namespace std;
+
 VentanaPrincipal::VentanaPrincipal(QWidget* padre) : QMainWindow(padre){
     setWindowTitle("Helicopter Rescue");
     setFixedSize(1024, 600);

@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <QFont>
 
+using namespace std;
+
 const double LIMITE_TECHO = 95;
 const double LIMITE_SUELO = 540;
 const double MEDIA_ALTURA_HELI = 28;

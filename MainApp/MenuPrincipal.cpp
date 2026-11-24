@@ -3,6 +3,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+using namespace std;
+
 MenuPrincipal::MenuPrincipal(QWidget* padre) : QWidget(padre){
     QPixmap fondo(":/img/fondo_montanas.png");
     fondo = fondo.scaled(1024, 600);

@@ -1,6 +1,8 @@
 #include "JuegoView.h"
 #include <QKeyEvent>
 
+using namespace std;
+
 JuegoView::JuegoView(QWidget* padre) : QGraphicsView(padre){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
