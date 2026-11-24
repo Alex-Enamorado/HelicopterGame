@@ -1,37 +1,34 @@
 #include "JuegoView.h"
 #include <QKeyEvent>
 
-JuegoView::JuegoView(QWidget *padre) : QGraphicsView(padre)
-{
+JuegoView::JuegoView(QWidget* padre) : QGraphicsView(padre){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFrameShape(QFrame::NoFrame);
     setRenderHint(QPainter::SmoothPixmapTransform);
 }
 
-void JuegoView::keyPressEvent(QKeyEvent *evento)
-{
+void JuegoView::keyPressEvent(QKeyEvent* evento){
     // Al mantener una tecla, el sistema repite el evento: se ignoran las repeticiones
-    if (evento->isAutoRepeat()) {
+    if(evento->isAutoRepeat()){
         return;
     }
 
-    if (evento->key() == Qt::Key_Space) {
+    if(evento->key() == Qt::Key_Space){
         emit teclaEspacio(true);
-    } else if (evento->key() == Qt::Key_Return || evento->key() == Qt::Key_Enter) {
+    } else if(evento->key() == Qt::Key_Return || evento->key() == Qt::Key_Enter){
         emit teclaEnter();
-    } else if (evento->key() == Qt::Key_Escape) {
+    } else if(evento->key() == Qt::Key_Escape){
         emit teclaEscape();
     }
 }
 
-void JuegoView::keyReleaseEvent(QKeyEvent *evento)
-{
-    if (evento->isAutoRepeat()) {
+void JuegoView::keyReleaseEvent(QKeyEvent* evento){
+    if(evento->isAutoRepeat()){
         return;
     }
 
-    if (evento->key() == Qt::Key_Space) {
+    if(evento->key() == Qt::Key_Space){
         emit teclaEspacio(false);
     }
 }

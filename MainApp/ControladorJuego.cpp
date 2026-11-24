@@ -4,8 +4,7 @@
 #include "Helicoptero.h"
 #include <QTimer>
 
-ControladorJuego::ControladorJuego(JuegoView *vistaJuego, QObject *padre) : QObject(padre)
-{
+ControladorJuego::ControladorJuego(JuegoView* vistaJuego, QObject* padre) : QObject(padre){
     vista = vistaJuego;
     enVuelo = false;
     terminada = false;
@@ -21,14 +20,12 @@ ControladorJuego::ControladorJuego(JuegoView *vistaJuego, QObject *padre) : QObj
     connect(vista, &JuegoView::teclaEscape, this, &ControladorJuego::alPresionarEscape);
 }
 
-ControladorJuego::~ControladorJuego()
-{
+ControladorJuego::~ControladorJuego(){
     delete escena;      // Al borrar la escena, ella borra el helicóptero y lo demás
     escena = nullptr;
 }
 
-void ControladorJuego::iniciarPartida()
-{
+void ControladorJuego::iniciarPartida(){
     timer->stop();
     enVuelo = false;
     terminada = false;
@@ -37,58 +34,53 @@ void ControladorJuego::iniciarPartida()
     vista->setFocus();
 }
 
-void ControladorJuego::alPresionarEspacio(bool presionada)
-{
-    if (terminada) {
+void ControladorJuego::alPresionarEspacio(bool presionada){
+    if(terminada){
         return;
     }
 
     // El primer ESPACIO arranca el vuelo
-    if (enVuelo == false && presionada == true) {
+    if(enVuelo == false && presionada == true){
         enVuelo = true;
         escena->ocultarMensaje();
         reloj.start();
         timer->start(16);   // ~60 veces por segundo
     }
 
-    if (enVuelo) {
-        Helicoptero *helicoptero = escena->getHelicoptero();
+    if(enVuelo){
+        Helicoptero* helicoptero = escena->getHelicoptero();
         helicoptero->setImpulso(presionada);
     }
 }
 
-void ControladorJuego::alPresionarEnter()
-{
-    if (terminada) {
+void ControladorJuego::alPresionarEnter(){
+    if(terminada){
         iniciarPartida();
     }
 }
 
-void ControladorJuego::alPresionarEscape()
-{
+void ControladorJuego::alPresionarEscape(){
     timer->stop();
     emit volverAlMenu();
 }
 
-void ControladorJuego::actualizar()
-{
+void ControladorJuego::actualizar(){
     // Delta time: segundos reales desde el tick anterior
     double deltaTime = reloj.restart() / 1000.0;
 
     // Evita saltos grandes si la ventana se congela
-    if (deltaTime > 0.05) {
+    if(deltaTime > 0.05){
         deltaTime = 0.05;
     }
 
     escena->actualizar(deltaTime);
 
-    if (escena->hayColision()) {
+    if(escena->hayColision()){
         terminarPartida();
     }
 }
 
-void ControladorJuego::terminarPartida()
-{
+void ControladorJuego::terminarPartida(){
     timer->stop();          // Detiene el movimiento
     enVuelo = false;
     terminada = true;

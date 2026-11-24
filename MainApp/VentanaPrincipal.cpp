@@ -5,8 +5,7 @@
 #include <QStackedWidget>
 #include <QMessageBox>
 
-VentanaPrincipal::VentanaPrincipal(QWidget *padre) : QMainWindow(padre)
-{
+VentanaPrincipal::VentanaPrincipal(QWidget* padre) : QMainWindow(padre){
     setWindowTitle("Helicopter Rescue");
     setFixedSize(1024, 600);
 
@@ -27,14 +26,12 @@ VentanaPrincipal::VentanaPrincipal(QWidget *padre) : QMainWindow(padre)
     connect(controlador, &ControladorJuego::volverAlMenu, this, &VentanaPrincipal::mostrarMenu);
 }
 
-void VentanaPrincipal::iniciarMision()
-{
+void VentanaPrincipal::iniciarMision(){
     pantallas->setCurrentWidget(vista);
     controlador->iniciarPartida();
 }
 
-void VentanaPrincipal::mostrarInstrucciones()
-{
+void VentanaPrincipal::mostrarInstrucciones(){
     QMessageBox::information(this, "Instrucciones",
         "Mantén ESPACIO para subir.\n"
         "Suelta ESPACIO para bajar.\n"
@@ -43,7 +40,6 @@ void VentanaPrincipal::mostrarInstrucciones()
         "ESC: volver al menú");
 }
 
-void VentanaPrincipal::mostrarMenu()
-{
+void VentanaPrincipal::mostrarMenu(){
     pantallas->setCurrentWidget(menu);
 }

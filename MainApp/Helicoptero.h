@@ -4,8 +4,7 @@
 #include <QGraphicsPixmapItem>
 
 // Helicóptero del jugador: guarda su física y se dibuja en la escena.
-class Helicoptero : public QGraphicsPixmapItem
-{
+class Helicoptero : public QGraphicsPixmapItem {
 public:
     Helicoptero();
 

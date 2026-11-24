@@ -1,8 +1,7 @@
 #include "Helicoptero.h"
 #include <QPixmap>
 
-Helicoptero::Helicoptero()
-{
+Helicoptero::Helicoptero(){
     x = 220;
     y = 300;
     velocidadY = 0;
@@ -24,8 +23,7 @@ Helicoptero::Helicoptero()
     reiniciar();
 }
 
-void Helicoptero::reiniciar()
-{
+void Helicoptero::reiniciar(){
     y = 300;
     velocidadY = 0;
     aceleracion = 0;
@@ -35,16 +33,14 @@ void Helicoptero::reiniciar()
     setRotation(rotacion);
 }
 
-void Helicoptero::setImpulso(bool activo)
-{
+void Helicoptero::setImpulso(bool activo){
     impulso = activo;
 }
 
-void Helicoptero::actualizar(double deltaTime)
-{
+void Helicoptero::actualizar(double deltaTime){
     // En Qt el eje Y crece hacia abajo: la gravedad es positiva
     // y el empuje del motor se resta.
-    if (impulso) {
+    if(impulso){
         aceleracion = gravedad - empuje;
     } else {
         aceleracion = gravedad;
@@ -54,10 +50,10 @@ void Helicoptero::actualizar(double deltaTime)
     velocidadY = velocidadY + aceleracion * deltaTime;
 
     // Límite de velocidad para que se pueda controlar
-    if (velocidadY > 450) {
+    if(velocidadY > 450){
         velocidadY = 450;
     }
-    if (velocidadY < -450) {
+    if(velocidadY < -450){
         velocidadY = -450;
     }
 
@@ -73,7 +69,6 @@ void Helicoptero::actualizar(double deltaTime)
     setRotation(rotacion);
 }
 
-double Helicoptero::getY() const
-{
+double Helicoptero::getY() const{
     return y;
 }

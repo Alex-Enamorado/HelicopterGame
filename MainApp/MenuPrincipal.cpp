@@ -3,8 +3,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-MenuPrincipal::MenuPrincipal(QWidget *padre) : QWidget(padre)
-{
+MenuPrincipal::MenuPrincipal(QWidget* padre) : QWidget(padre){
     // Imagen de fondo
     QPixmap fondo(":/img/fondo_montanas.png");
     fondo = fondo.scaled(1024, 600);
@@ -13,18 +12,18 @@ MenuPrincipal::MenuPrincipal(QWidget *padre) : QWidget(padre)
     setPalette(paleta);
     setAutoFillBackground(true);
 
-    QLabel *titulo = new QLabel("HELICOPTER RESCUE");
+    QLabel* titulo = new QLabel("HELICOPTER RESCUE");
     titulo->setAlignment(Qt::AlignCenter);
     titulo->setStyleSheet("color: #e8d27a; font: bold 56px 'Impact';"
                           "background: rgba(0, 0, 0, 140); padding: 10px;");
 
-    QPushButton *botonIniciar = crearBoton(":/img/boton_iniciar.png");
-    QPushButton *botonInstrucciones = crearBoton(":/img/boton_instrucciones.png");
-    QPushButton *botonSalir = crearBoton(":/img/boton_salir.png");
+    QPushButton* botonIniciar = crearBoton(":/img/boton_iniciar.png");
+    QPushButton* botonInstrucciones = crearBoton(":/img/boton_instrucciones.png");
+    QPushButton* botonSalir = crearBoton(":/img/boton_salir.png");
 
     // Al agregarlos al layout, los widgets pasan a ser hijos del menú
     // y Qt los borra automáticamente.
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addStretch();
     layout->addWidget(titulo);
     layout->addSpacing(30);
@@ -39,11 +38,10 @@ MenuPrincipal::MenuPrincipal(QWidget *padre) : QWidget(padre)
 }
 
 // Crea un botón que muestra una imagen
-QPushButton *MenuPrincipal::crearBoton(QString rutaImagen)
-{
+QPushButton* MenuPrincipal::crearBoton(QString rutaImagen){
     QPixmap imagen(rutaImagen);
 
-    QPushButton *boton = new QPushButton();
+    QPushButton* boton = new QPushButton();
     boton->setIcon(QIcon(imagen));
     boton->setIconSize(imagen.size());
     boton->setCursor(Qt::PointingHandCursor);

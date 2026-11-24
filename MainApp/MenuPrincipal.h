@@ -6,12 +6,11 @@
 class QPushButton;
 
 // Pantalla del menú: título y tres botones. Solo avisa qué botón se presionó.
-class MenuPrincipal : public QWidget
-{
+class MenuPrincipal : public QWidget {
     Q_OBJECT
 
 public:
-    MenuPrincipal(QWidget *padre = nullptr);
+    MenuPrincipal(QWidget* padre = nullptr);
 
 signals:
     void iniciarPresionado();
@@ -19,7 +18,7 @@ signals:
     void salirPresionado();
 
 private:
-    QPushButton *crearBoton(QString rutaImagen);
+    QPushButton* crearBoton(QString rutaImagen);
 };
 
 #endif

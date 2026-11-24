@@ -4,12 +4,11 @@
 #include <QGraphicsView>
 
 // Muestra la escena y avisa (con señales) qué teclas presiona el jugador.
-class JuegoView : public QGraphicsView
-{
+class JuegoView : public QGraphicsView {
     Q_OBJECT
 
 public:
-    JuegoView(QWidget *padre = nullptr);
+    JuegoView(QWidget* padre = nullptr);
 
 signals:
     void teclaEspacio(bool presionada);
@@ -17,8 +16,8 @@ signals:
     void teclaEscape();
 
 protected:
-    void keyPressEvent(QKeyEvent *evento) override;
-    void keyReleaseEvent(QKeyEvent *evento) override;
+    void keyPressEvent(QKeyEvent* evento) override;
+    void keyReleaseEvent(QKeyEvent* evento) override;
 };
 
 #endif
