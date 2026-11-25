@@ -37,4 +37,4 @@ class Helicoptero : public QGraphicsPixmapItem{
         double rotacionMaxima = 18;
 };
 
-#endif // HELICOPTERO_H
+#endif

@@ -14,6 +14,7 @@ add_executable(HelicopterRescue WIN32
     recursos.qrc
     mainapp.cpp
     helicoptero.h helicoptero.cpp
+    MenuPrincipal.h MenuPrincipal.cpp
 
 )
 

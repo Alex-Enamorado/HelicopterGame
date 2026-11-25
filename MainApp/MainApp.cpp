@@ -7,7 +7,9 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QKeyEvent>
+#include <QStackedWidget>
 #include "helicoptero.h"
+#include "MenuPrincipal.h"
 
 class VistaJuego : public QGraphicsView{
     public:
@@ -55,6 +57,8 @@ class VistaJuego : public QGraphicsView{
 
 int main(int argc, char *argv[]){
     QApplication app(argc, argv);
+    // Se declara antes que el menu y la vista para que se destruya despues de ellos
+    QStackedWidget ventana;
     QGraphicsScene escena(0,0,1024,600);
     QPixmap fondo(":/img/fondo.png");
     auto *itemFondo = escena.addPixmap(fondo.scaled(1024,600));
@@ -70,13 +74,26 @@ int main(int argc, char *argv[]){
     vista.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     vista.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     vista.setFrameShape(QFrame::NoFrame);
-    vista.setWindowTitle("Helicopter Rescue");
-    vista.show();
-    vista.setFocus();
+
+    MenuPrincipal menu;
+
+    ventana.setFixedSize(1024,600);
+    ventana.setWindowTitle("Helicopter Rescue");
+    ventana.addWidget(&menu);
+    ventana.addWidget(&vista);
+    ventana.setCurrentWidget(&menu);
+    ventana.show();
 
     QElapsedTimer reloj;
-    reloj.start();
     QTimer timer;
+
+    // El juego arranca solo cuando se presiona "Iniciar Mision"
+    QObject::connect(&menu, &MenuPrincipal::jugar, [&](){
+        ventana.setCurrentWidget(&vista);
+        vista.setFocus();
+        reloj.start();
+        timer.start(16);
+    });
 
     QObject::connect(&timer, &QTimer::timeout, [&](){
         double dt = reloj.restart() / 1000.0;
@@ -85,6 +102,5 @@ int main(int argc, char *argv[]){
             heli->aterrizar(540);
         }
     });
-    timer.start(16);
     return app.exec();
 }

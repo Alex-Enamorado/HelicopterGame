@@ -3,5 +3,8 @@
     <qresource prefix="/img">
         <file alias="helicoptero.png">../Recursos/01_Helicoptero_Rotor.png</file>
         <file alias="fondo.png">../Recursos/02_Fondo_Montanas.png</file>
+        <file alias="boton_jugar.png">../Recursos/11_Boton_Iniciar_Mision.png</file>
+        <file alias="boton_instrucciones.png">../Recursos/12_Boton_Instrucciones.png</file>
+        <file alias="boton_salir.png">../Recursos/13_Boton_Salir.png</file>
     </qresource>
 </RCC>
