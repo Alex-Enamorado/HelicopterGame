@@ -13,6 +13,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 add_executable(HelicopterRescue WIN32
     recursos.qrc
     mainapp.cpp
+    helicoptero.h helicoptero.cpp
+
 )
 
 target_link_libraries(HelicopterRescue PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)

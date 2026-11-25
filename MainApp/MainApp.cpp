@@ -4,6 +4,9 @@
 #include <QGraphicsView>
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
+#include <QTimer>
+#include <QElapsedTimer>
+#include "helicoptero.h"
 
 
 int main(int argc, char *argv[])
@@ -19,10 +22,10 @@ int main(int argc, char *argv[])
     itemFondo -> setZValue(0);
 
     //HELICOPTERO
-    QPixmap heli(":/img/helicoptero.png");
-    auto *itemHeli = escena.addPixmap(heli.scaledToWidth(120, Qt::SmoothTransformation));
-    itemHeli -> setPos(150,250);
-    itemHeli -> setZValue(1);
+    Helicoptero *heli = new Helicoptero();
+    heli->setPos(150,250);
+    heli->setZValue(1);
+    escena.addItem(heli);
 
     //Vista de ventana
     QGraphicsView vista(&escena);
@@ -34,9 +37,21 @@ int main(int argc, char *argv[])
     vista.show();
 
 
+    //Gameloop se actualiza 60 veces por segundo
+    QElapsedTimer reloj;
+    reloj.start();
+    QTimer timer;
+
+    QObject::connect(&timer, &QTimer::timeout, [&](){
+        double dt = reloj.restart() / 1000.0;
+        heli -> actualizar(dt);
+        if(heli->y() + heli->pixmap().height()>540){
+            heli->aterrizar(540);
+        }
 
 
+    });
+    timer.start(16);
 
-
-    return app.exec();              // mantiene la ventana abierta hasta cerrarla
+    return app.exec();              // mantiene la ventana abierta hasta que se cierre
 }
