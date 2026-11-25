@@ -7,16 +7,16 @@ class MenuPrincipal : public QWidget{
     Q_OBJECT
 
     public:
-        explicit MenuPrincipal(QWidget *parent = nullptr);
+        explicit MenuPrincipal(QWidget *widgetPadre = nullptr);
 
     signals:
         void jugar();
 
     protected:
-        void paintEvent(QPaintEvent *e) override;
+        void paintEvent(QPaintEvent *) override;
 
     private:
-        QPixmap fondo;
+        QPixmap imagenFondo;
 };
 
-#endif // MENUPRINCIPAL_H
+#endif

@@ -6,8 +6,8 @@
 using namespace std;
 
 Helicoptero::Helicoptero(){
-    QPixmap img(":/img/helicoptero.png");
-    setPixmap(img.scaledToWidth(120, Qt::SmoothTransformation));
+    QPixmap imagenHelicoptero(":/img/helicoptero.png");
+    setPixmap(imagenHelicoptero.scaledToWidth(120, Qt::SmoothTransformation));
 
     setTransformOriginPoint(
         pixmap().width() / 2.0,
@@ -17,7 +17,7 @@ Helicoptero::Helicoptero(){
 
 
 
-void Helicoptero::actualizar(double dt){
+void Helicoptero::actualizar(double segundosTranscurridos){
     double aceleracionY = gravedad;
 
     if(impulsoActivo){
@@ -28,45 +28,45 @@ void Helicoptero::actualizar(double dt){
         aceleracionY += gravedad;
     }
 
-    velocidadY += aceleracionY * dt;
+    velocidadY += aceleracionY * segundosTranscurridos;
 
-    if(velocidadY > velocidadMaxY){
-        velocidadY = velocidadMaxY;
+    if(velocidadY > velocidadMaximaY){
+        velocidadY = velocidadMaximaY;
     }
 
-    if(velocidadY < -velocidadMaxY){
-        velocidadY = -velocidadMaxY;
+    if(velocidadY < -velocidadMaximaY){
+        velocidadY = -velocidadMaximaY;
     }
 
-    setY(y() + velocidadY * dt);
+    setY(y() + velocidadY * segundosTranscurridos);
 
     if(izquierdaActiva && !derechaActiva){
-        velocidadX -= aceleracionX * dt;
+        velocidadX -= aceleracionX * segundosTranscurridos;
     } else if(derechaActiva && !izquierdaActiva){
-        velocidadX += aceleracionX * dt;
+        velocidadX += aceleracionX * segundosTranscurridos;
     } else{
         if(velocidadX > 0){
-            velocidadX -= friccion * dt;
+            velocidadX -= friccion * segundosTranscurridos;
             if(velocidadX < 0){
                 velocidadX = 0;
             }
         } else if(velocidadX < 0){
-            velocidadX += friccion * dt;
-            if(velocidadX > 0){
+            velocidadX += friccion * segundosTranscurridos;
+            if (velocidadX > 0) {
                 velocidadX = 0;
             }
         }
     }
 
 
-    if(velocidadX > velocidadMaxX){
-        velocidadX = velocidadMaxX;
+    if(velocidadX > velocidadMaximaX){
+        velocidadX = velocidadMaximaX;
     }
 
-    if(velocidadX < -velocidadMaxX){
-        velocidadX = -velocidadMaxX;
+    if(velocidadX < -velocidadMaximaX){
+        velocidadX = -velocidadMaximaX;
     }
-    setX(x() + velocidadX * dt);
+    setX(x() + velocidadX * segundosTranscurridos);
 
     double anguloObjetivo = velocidadY / 25.0;
 
@@ -76,42 +76,42 @@ void Helicoptero::actualizar(double dt){
         rotacionMaxima
     );
 
-    rotacion += (anguloObjetivo - rotacion) * min(1.0, 5.0 * dt);
-    setRotation(rotacion);
+    rotacionActual += (anguloObjetivo - rotacionActual) * min(1.0, 5.0 * segundosTranscurridos);
+    setRotation(rotacionActual);
 
     if(scene() != nullptr){
-        double anchoEscena = scene()->sceneRect().width();
+        double anchoDeLaEscena = scene()->sceneRect().width();
         if(x() < 0){
             setX(0);
             velocidadX = 0;
         }
 
-        if(x() + pixmap().width() > anchoEscena){
-            setX(anchoEscena - pixmap().width());
+        if(x() + pixmap().width() > anchoDeLaEscena){
+            setX(anchoDeLaEscena - pixmap().width());
             velocidadX = 0;
         }
     }
 }
 
 
-void Helicoptero::aterrizar(double ySuelo){
-    setY(ySuelo - pixmap().height());
+void Helicoptero::aterrizar(double alturaDelSuelo){
+    setY(alturaDelSuelo - pixmap().height());
     velocidadY = 0;
 }
 
-void Helicoptero::setImpulso(bool activo){
-    impulsoActivo = activo;
+void Helicoptero::setImpulso(bool estaActivo){
+    impulsoActivo = estaActivo;
 }
 
-void Helicoptero::setAbajo(bool activo){
-    abajoActivo = activo;
+void Helicoptero::setAbajo(bool estaActivo){
+    abajoActivo = estaActivo;
 }
 
-void Helicoptero::setIzquierda(bool activo){
-    izquierdaActiva = activo;
+void Helicoptero::setIzquierda(bool estaActivo){
+    izquierdaActiva = estaActivo;
 }
 
-void Helicoptero::setDerecha(bool activo){
-    derechaActiva = activo;
+void Helicoptero::setDerecha(bool estaActivo){
+    derechaActiva = estaActivo;
 }
 

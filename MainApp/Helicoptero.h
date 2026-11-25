@@ -6,14 +6,14 @@ class Helicoptero : public QGraphicsPixmapItem{
     public:
         Helicoptero();
 
-        void actualizar(double dt);
-        void aterrizar(double ySuelo);
+        void actualizar(double segundosTranscurridos);
+        void aterrizar(double alturaDelSuelo);
 
-        void setImpulso(bool activo);
-        void setAbajo(bool activo);
+        void setImpulso(bool estaActivo);
+        void setAbajo(bool estaActivo);
 
-        void setIzquierda(bool activo);
-        void setDerecha(bool activo);
+        void setIzquierda(bool estaActivo);
+        void setDerecha(bool estaActivo);
 
     private:
         double velocidadY = 0;
@@ -21,11 +21,11 @@ class Helicoptero : public QGraphicsPixmapItem{
 
         double gravedad = 900;
         double empuje = 1800;
-        double velocidadMaxY = 450;
+        double velocidadMaximaY = 450;
 
         double aceleracionX = 1500;
         double friccion = 1200;
-        double velocidadMaxX = 350;
+        double velocidadMaximaX = 350;
 
         bool impulsoActivo = false;
         bool abajoActivo = false;
@@ -33,7 +33,7 @@ class Helicoptero : public QGraphicsPixmapItem{
         bool derechaActiva = false;
 
 
-        double rotacion = 0;
+        double rotacionActual = 0;
         double rotacionMaxima = 18;
 };
 

@@ -6,54 +6,52 @@
 #include <QIcon>
 
 namespace{
-    // Crea un boton con la imagen del recurso
-    QPushButton *crearBoton(const QString &ruta, QWidget *padre){
-        QPixmap img(ruta);
-        img = img.scaledToWidth(320, Qt::SmoothTransformation);
+    QPushButton *crearBotonConImagen(const QString &rutaImagen, QWidget *widgetPadre){
+        QPixmap imagenBoton(rutaImagen);
+        imagenBoton = imagenBoton.scaledToWidth(320, Qt::SmoothTransformation);
 
-        auto *boton = new QPushButton(padre);
-        boton->setIcon(QIcon(img));
-        boton->setIconSize(img.size());
-        boton->setFixedSize(img.size());
-        boton->setFlat(true);
-        boton->setFocusPolicy(Qt::NoFocus);
-        boton->setStyleSheet("QPushButton{border:none;background:transparent;}");
-        boton->setCursor(Qt::PointingHandCursor);
-        return boton;
+        auto *nuevoBoton = new QPushButton(widgetPadre);
+        nuevoBoton->setIcon(QIcon(imagenBoton));
+        nuevoBoton->setIconSize(imagenBoton.size());
+        nuevoBoton->setFixedSize(imagenBoton.size());
+        nuevoBoton->setFlat(true);
+        nuevoBoton->setFocusPolicy(Qt::NoFocus);
+        nuevoBoton->setStyleSheet("QPushButton{border:none;background:transparent;}");
+        nuevoBoton->setCursor(Qt::PointingHandCursor);
+        return nuevoBoton;
     }
 }
 
-MenuPrincipal::MenuPrincipal(QWidget *parent)
-    : QWidget(parent), fondo(":/img/fondo.png"){
+MenuPrincipal::MenuPrincipal(QWidget *widgetPadre)
+    : QWidget(widgetPadre), imagenFondo(":/img/fondo.png"){
 
-    auto *titulo = new QLabel("HELICOPTER\nRESCUE", this);
-    titulo->setAlignment(Qt::AlignCenter);
-    titulo->setStyleSheet(
+    auto *tituloDelJuego = new QLabel("HELICOPTER\nRESCUE", this);
+    tituloDelJuego->setAlignment(Qt::AlignCenter);
+    tituloDelJuego->setStyleSheet(
         "color:#ffd84a;"
         "font-size:64px;"
         "font-weight:bold;"
         "background:transparent;"
     );
 
-    QPushButton *botonJugar = crearBoton(":/img/boton_jugar.png", this);
-    QPushButton *botonInstrucciones = crearBoton(":/img/boton_instrucciones.png", this);
-    QPushButton *botonSalir = crearBoton(":/img/boton_salir.png", this);
+    QPushButton *botonJugar = crearBotonConImagen(":/img/boton_jugar.png", this);
+    QPushButton *botonInstrucciones = crearBotonConImagen(":/img/boton_instrucciones.png", this);
+    QPushButton *botonSalir = crearBotonConImagen(":/img/boton_salir.png", this);
 
     connect(botonJugar, &QPushButton::clicked, this, &MenuPrincipal::jugar);
-    // botonInstrucciones y botonSalir: todavia sin implementar
 
-    auto *layout = new QVBoxLayout(this);
-    layout->setSpacing(14);
-    layout->addStretch(1);
-    layout->addWidget(titulo, 0, Qt::AlignHCenter);
-    layout->addSpacing(20);
-    layout->addWidget(botonJugar, 0, Qt::AlignHCenter);
-    layout->addWidget(botonInstrucciones, 0, Qt::AlignHCenter);
-    layout->addWidget(botonSalir, 0, Qt::AlignHCenter);
-    layout->addStretch(1);
+    auto *disposicionVertical = new QVBoxLayout(this);
+    disposicionVertical->setSpacing(14);
+    disposicionVertical->addStretch(1);
+    disposicionVertical->addWidget(tituloDelJuego, 0, Qt::AlignHCenter);
+    disposicionVertical->addSpacing(20);
+    disposicionVertical->addWidget(botonJugar, 0, Qt::AlignHCenter);
+    disposicionVertical->addWidget(botonInstrucciones, 0, Qt::AlignHCenter);
+    disposicionVertical->addWidget(botonSalir, 0, Qt::AlignHCenter);
+    disposicionVertical->addStretch(1);
 }
 
 void MenuPrincipal::paintEvent(QPaintEvent *){
-    QPainter p(this);
-    p.drawPixmap(rect(), fondo);
+    QPainter pintor(this);
+    pintor.drawPixmap(rect(), imagenFondo);
 }

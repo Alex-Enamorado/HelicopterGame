@@ -13,94 +13,101 @@
 
 class VistaJuego : public QGraphicsView{
     public:
-        VistaJuego(QGraphicsScene *escena, Helicoptero *heli)
-            : QGraphicsView(escena), heli(heli){
+        VistaJuego(QGraphicsScene *escenaDelJuego, Helicoptero *helicoptero)
+            : QGraphicsView(escenaDelJuego), helicoptero(helicoptero){
             setFocusPolicy(Qt::StrongFocus);
         }
 
     protected:
-        void keyPressEvent(QKeyEvent *e) override{
-            if(e->isAutoRepeat()){ return; }
-            cambiarTecla(e->key(), true);
+        void keyPressEvent(QKeyEvent *eventoTeclado) override{
+            if(eventoTeclado->isAutoRepeat()){ return; }
+            actualizarEstadoTecla(eventoTeclado->key(), true);
         }
 
-        void keyReleaseEvent(QKeyEvent *e) override{
-            if(e->isAutoRepeat()){ return; }
-            cambiarTecla(e->key(), false);
+        void keyReleaseEvent(QKeyEvent *eventoTeclado) override{
+            if(eventoTeclado->isAutoRepeat()){ return; }
+            actualizarEstadoTecla(eventoTeclado->key(), false);
         }
 
-        void focusOutEvent(QFocusEvent *e) override{
-            espacio = arriba = false;
-            heli->setImpulso(false);
-            heli->setAbajo(false);
-            heli->setIzquierda(false);
-            heli->setDerecha(false);
-            QGraphicsView::focusOutEvent(e);
+        void focusOutEvent(QFocusEvent *eventoFoco) override{
+            teclaEspacioPresionada = teclaFlechaArribaPresionada = false;
+            helicoptero->setImpulso(false);
+            helicoptero->setAbajo(false);
+            helicoptero->setIzquierda(false);
+            helicoptero->setDerecha(false);
+            QGraphicsView::focusOutEvent(eventoFoco);
         }
 
     private:
-        void cambiarTecla(int tecla, bool presionada){
-            switch(tecla){
-                case Qt::Key_Space: espacio = presionada; heli->setImpulso(espacio || arriba); break;
-                case Qt::Key_Up:    arriba = presionada;  heli->setImpulso(espacio || arriba); break;
-                case Qt::Key_Down:  heli->setAbajo(presionada); break;
-                case Qt::Key_Left:  heli->setIzquierda(presionada); break;
-                case Qt::Key_Right: heli->setDerecha(presionada); break;
+        void actualizarEstadoTecla(int codigoTecla, bool estaPresionada){
+            switch(codigoTecla){
+                case Qt::Key_Space:
+                    teclaEspacioPresionada = estaPresionada;
+                    helicoptero->setImpulso(teclaEspacioPresionada || teclaFlechaArribaPresionada);
+                    break;
+                case Qt::Key_Up:
+                    teclaFlechaArribaPresionada = estaPresionada;
+                    helicoptero->setImpulso(teclaEspacioPresionada || teclaFlechaArribaPresionada);
+                    break;
+                case Qt::Key_Down:  helicoptero->setAbajo(estaPresionada); break;
+                case Qt::Key_Left:  helicoptero->setIzquierda(estaPresionada); break;
+                case Qt::Key_Right: helicoptero->setDerecha(estaPresionada); break;
             }
         }
 
-        Helicoptero *heli;
-        bool espacio = false;
-        bool arriba = false;
+        Helicoptero *helicoptero;
+        bool teclaEspacioPresionada = false;
+        bool teclaFlechaArribaPresionada = false;
 };
 
 
 int main(int argc, char *argv[]){
-    QApplication app(argc, argv);
-    // Se declara antes que el menu y la vista para que se destruya despues de ellos
-    QStackedWidget ventana;
-    QGraphicsScene escena(0,0,1024,600);
-    QPixmap fondo(":/img/fondo.png");
-    auto *itemFondo = escena.addPixmap(fondo.scaled(1024,600));
-    itemFondo -> setZValue(0);
+    QApplication aplicacion(argc, argv);
 
-    Helicoptero *heli = new Helicoptero();
-    heli->setPos(150,250);
-    heli->setZValue(1);
-    escena.addItem(heli);
+    QStackedWidget ventanaPrincipal;
+    QGraphicsScene escenaDelJuego(0,0,1024,600);
+    QPixmap imagenFondo(":/img/fondo.png");
+    auto *itemImagenFondo = escenaDelJuego.addPixmap(imagenFondo.scaled(1024,600));
+    itemImagenFondo -> setZValue(0);
 
-    VistaJuego vista(&escena, heli);
-    vista.setFixedSize(1024,600);
-    vista.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    vista.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    vista.setFrameShape(QFrame::NoFrame);
+    Helicoptero *helicoptero = new Helicoptero();
+    helicoptero->setPos(150,250);
+    helicoptero->setZValue(1);
+    escenaDelJuego.addItem(helicoptero);
 
-    MenuPrincipal menu;
+    VistaJuego vistaJuego(&escenaDelJuego, helicoptero);
+    vistaJuego.setFixedSize(1024,600);
+    vistaJuego.setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    vistaJuego.setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    vistaJuego.setFrameShape(QFrame::NoFrame);
 
-    ventana.setFixedSize(1024,600);
-    ventana.setWindowTitle("Helicopter Rescue");
-    ventana.addWidget(&menu);
-    ventana.addWidget(&vista);
-    ventana.setCurrentWidget(&menu);
-    ventana.show();
+    MenuPrincipal menuPrincipal;
 
-    QElapsedTimer reloj;
-    QTimer timer;
+    ventanaPrincipal.setFixedSize(1024,600);
+    ventanaPrincipal.setWindowTitle("Helicopter Rescue");
+    ventanaPrincipal.addWidget(&menuPrincipal);
+    ventanaPrincipal.addWidget(&vistaJuego);
+    ventanaPrincipal.setCurrentWidget(&menuPrincipal);
+    ventanaPrincipal.show();
 
-    // El juego arranca solo cuando se presiona "Iniciar Mision"
-    QObject::connect(&menu, &MenuPrincipal::jugar, [&](){
-        ventana.setCurrentWidget(&vista);
-        vista.setFocus();
-        reloj.start();
-        timer.start(16);
+    QElapsedTimer relojEntreCuadros;
+    QTimer temporizadorJuego;
+
+
+    QObject::connect(&menuPrincipal, &MenuPrincipal::jugar, [&](){
+        ventanaPrincipal.setCurrentWidget(&vistaJuego);
+        vistaJuego.setFocus();
+        relojEntreCuadros.start();
+        temporizadorJuego.start(16);
     });
 
-    QObject::connect(&timer, &QTimer::timeout, [&](){
-        double dt = reloj.restart() / 1000.0;
-        heli -> actualizar(dt);
-        if(heli->y() + heli->pixmap().height()>540){
-            heli->aterrizar(540);
+    QObject::connect(&temporizadorJuego, &QTimer::timeout, [&](){
+        const double alturaDelSuelo = 540;
+        double segundosTranscurridos = relojEntreCuadros.restart() / 1000.0;
+        helicoptero -> actualizar(segundosTranscurridos);
+        if(helicoptero->y() + helicoptero->pixmap().height() > alturaDelSuelo){
+            helicoptero->aterrizar(alturaDelSuelo);
         }
     });
-    return app.exec();
+    return aplicacion.exec();
 }
